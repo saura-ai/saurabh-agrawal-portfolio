@@ -68,3 +68,15 @@ button,input,textarea { font:inherit; }
 @supports (-webkit-touch-callout:none) {
   .glass { -webkit-backdrop-filter:blur(18px); }
 }
+
+/* Performance tuning for mobile Safari/Android */
+#space{pointer-events:none;will-change:transform;}
+@media (max-width: 700px){
+  .aurora{filter:blur(18px);opacity:.45;animation-duration:24s;}
+  .glass,.nav,.about-card,.t-card,.cert,.project,.hire-box{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+  .photo-halo{animation-duration:14s!important;}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+  #space{display:none!important}
+}

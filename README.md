@@ -1,4 +1,4 @@
-# Saurabh Agrawal — Finance & Data PGDM 3D Portfolio
+# Saurabh Agrawal — 3D Portfolio
 
 Production-ready static portfolio for GitHub Pages.
 
