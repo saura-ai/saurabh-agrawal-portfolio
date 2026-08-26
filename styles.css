@@ -21,149 +21,6 @@ main{max-width:1400px;margin:auto}.hero{min-height:88vh;display:grid;grid-templa
 @media(max-width:700px){body{padding-bottom:88px}.hero{padding:75px 20px 55px;min-height:auto}.hero-object{height:390px}.portrait{width:min(300px,70vw)}.float-chip{font-size:8px;padding:7px 9px}.chip-one{left:1%;top:7%}.chip-two{right:1%;top:10%}.chip-three{left:2%;bottom:8%}.object-label{bottom:10px}.section{padding:80px 20px}.section-head{margin-bottom:28px}.section-head h2{font-size:46px}.about-grid,.education-grid,.work-grid{grid-template-columns:1fr}.mini-stats{grid-template-columns:1fr}.depth-card,.edu-card,.work-card,.cert-card,.experience-card{border-radius:22px}.exp-body{grid-template-columns:1fr}.exp-body>div:nth-child(odd){border-right:0;padding-right:0}.exp-body>div:nth-child(even){padding-left:0}.skill-tiles{grid-template-columns:repeat(2,1fr)}.skill-tile{min-height:112px;padding:13px}.skill-detail{left:50%!important;right:auto!important;top:calc(100% + 9px);width:min(270px,80vw);transform:translate(-50%, -6px) scale(.98)!important}.skill-tile:hover .skill-detail,.skill-tile:focus-visible .skill-detail,.skill-tile.touch-open .skill-detail{transform:translate(-50%,0) scale(1)!important}.certs{grid-template-columns:1fr}.cert-card:last-child{grid-column:auto}.extras{grid-template-columns:1fr}.bottom-nav{bottom:9px;width:calc(100% - 12px);overflow-x:auto;justify-content:flex-start;border-radius:20px;scrollbar-width:none}.bottom-nav::-webkit-scrollbar{display:none}.bottom-item{min-width:68px;flex:0 0 68px}.bottom-item small{font-size:8px}.contact-copy h2{font-size:50px}footer{padding-inline:20px;flex-direction:column;align-items:flex-start;padding-bottom:120px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
 
-/* --- Micro-interactions: text-first hover highlights --- */
-.text-hover{
-  position:relative;
-  display:inline-block;
-  border-radius:8px;
-  transition:color .22s ease, text-shadow .22s ease, transform .22s ease, background .22s ease, padding .22s ease, filter .22s ease;
-}
-.text-hover::after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:-3px;
-  height:1px;
-  border-radius:999px;
-  background:linear-gradient(90deg,rgba(139,92,246,0),rgba(139,92,246,.95),rgba(66,217,255,.7),rgba(139,92,246,0));
-  transform:scaleX(0);
-  transform-origin:center;
-  transition:transform .25s ease;
-  pointer-events:none;
-}
-.text-hover:hover,
-.text-hover:focus-visible{
-  color:#fff !important;
-  text-shadow:0 0 16px rgba(139,92,246,.48),0 0 28px rgba(66,217,255,.12);
-  background:linear-gradient(90deg,rgba(139,92,246,.16),rgba(66,217,255,.055),transparent 90%);
-  padding-inline:7px;
-  margin-inline:-7px;
-  transform:translateX(2px);
-  filter:brightness(1.08);
-}
-.text-hover:hover::after,
-.text-hover:focus-visible::after{transform:scaleX(1)}
-
-/* Stronger, individual text hover for applied work */
-.work-card .text-hover:hover,
-.cert-card .text-hover:hover,
-.extras .text-hover:hover{
-  background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(66,217,255,.07),transparent);
-  box-shadow:inset 0 -1px 0 rgba(139,92,246,.35),0 0 20px rgba(111,79,226,.06);
-}
-.work-card p.text-hover:hover,
-.cert-card p.text-hover:hover,
-.extras span.text-hover:hover{
-  color:#d9deea !important;
-}
-
-/* Education: text highlights without moving the whole card */
-.edu-card .highlightable:hover,
-.edu-card .text-hover:hover{
-  transform:translateX(3px);
-  background:linear-gradient(90deg,rgba(139,92,246,.18),rgba(66,217,255,.04),transparent 92%);
-  box-shadow:inset 2px 0 0 rgba(139,92,246,.65);
-}
-
-@media(max-width:700px){
-  .text-hover:hover,.text-hover:focus-visible{transform:none}
-  .text-hover::after{display:none}
-}
-
-/* v4.1 — explicit text hover interaction */
-.text-hover{
-  cursor:default;
-  isolation:isolate;
-}
-.text-hover::before{
-  content:"";
-  position:absolute;
-  z-index:-1;
-  inset:-5px -9px;
-  border-radius:10px;
-  background:radial-gradient(ellipse at center,rgba(139,92,246,.20),rgba(66,217,255,.06) 42%,transparent 74%);
-  filter:blur(9px);
-  opacity:0;
-  transform:scale(.82);
-  transition:opacity .24s ease,transform .24s ease;
-  pointer-events:none;
-}
-.text-hover:hover::before,
-.text-hover:focus-visible::before,
-.text-hover.touch-open::before{
-  opacity:1;
-  transform:scale(1);
-}
-.text-hover::after{
-  content:"";
-  position:absolute;
-  z-index:-1;
-  left:0;
-  right:0;
-  bottom:-5px;
-  height:2px;
-  border-radius:999px;
-  background:linear-gradient(90deg,transparent,#8b5cf6 25%,#42d9ff 70%,transparent);
-  transform:scaleX(0);
-  transform-origin:center;
-  transition:transform .26s cubic-bezier(.2,.8,.2,1);
-  pointer-events:none;
-}
-.text-hover:hover::after,
-.text-hover:focus-visible::after,
-.text-hover.touch-open::after{transform:scaleX(1)}
-
-/* Make each requested section feel interactive even when the pointer is exactly over text. */
-.work-card .text-hover,
-.cert-card .text-hover,
-.extras .text-hover,
-.edu-card .highlightable{
-  -webkit-tap-highlight-color:transparent;
-}
-.work-card .text-hover:hover,
-.cert-card .text-hover:hover,
-.extras .text-hover:hover,
-.edu-card .highlightable:hover{
-  color:#fff !important;
-  text-shadow:0 0 10px rgba(139,92,246,.48),0 0 24px rgba(66,217,255,.12);
-}
-.work-card p.text-hover,
-.cert-card p.text-hover,
-.extras span.text-hover{
-  transition:color .22s ease,text-shadow .22s ease,background .22s ease,filter .22s ease;
-}
-.work-card p.text-hover:hover,
-.cert-card p.text-hover:hover,
-.extras span.text-hover:hover{
-  color:#e4e8f0 !important;
-  background:rgba(139,92,246,.055);
-  filter:brightness(1.08);
-}
-
-/* Mobile: tap/focus gets the same visual treatment because hover is unavailable. */
-@media (hover:none), (pointer:coarse){
-  .text-hover{cursor:pointer}
-}
-
-/* ===== V5 FLOAT + FLOW MOTION ===== */
-.hero-object{animation:heroFloat 7s ease-in-out infinite;will-change:transform}
-.float-chip{animation:chipFloat 4.8s ease-in-out infinite;will-change:transform}
-.chip-two{animation-delay:-1.6s}.chip-three{animation-delay:-3s}.chip-one{animation-delay:-.6s}
-.orbit-a{animation:orbitDrift 11s ease-in-out infinite}.orbit-b{animation:orbitDriftB 13s ease-in-out infinite}
-.portrait{animation:portraitFloat 6s ease-in-out infinite;will-change:transform}
-.object-label{animation:labelFloat 5.5s ease-in-out infinite}
-
 /* Cards float very gently; hover overrides the lift naturally. */
 .depth-card,.edu-card,.experience-card,.work-card,.cert-card,.extras>div,.skill-cluster,.skill-orbit-card,.hire-card,.contact-shell{
   animation:cardFloat 8s ease-in-out infinite;
@@ -215,3 +72,219 @@ main{max-width:1400px;margin:auto}.hero{min-height:88vh;display:grid;grid-templa
   .hero-object,.float-chip,.orbit-a,.orbit-b,.portrait,.object-label,.depth-card,.edu-card,.experience-card,.work-card,.cert-card,.extras>div,.skill-cluster,.skill-orbit-card,.hire-card,.contact-shell,.skill-tile,.bottom-nav,.section::after{animation:none!important}
 }
 .depth-card:hover,.edu-card:hover,.experience-card:hover,.work-card:hover,.cert-card:hover,.extras>div:hover,.hire-card:hover{animation-play-state:paused;transform:translateY(-7px)}
+
+
+
+/* =========================================================
+   CLEAN INTERACTION SYSTEM
+   One card hover + one direct text hover.
+   ========================================================= */
+
+/* --- Education --- */
+.edu-card{
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+.edu-card:hover{
+  border-color: rgba(139,92,246,.42);
+  box-shadow: 0 22px 55px rgba(55,37,130,.16);
+  /* no second movement: floating animation handles depth */
+}
+.edu-top,
+.edu-icon,
+.edu-card h3,
+.edu-school,
+.edu-detail{
+  position:relative;
+  z-index:2;
+}
+.edu-card h3,
+.edu-school,
+.edu-detail,
+.edu-top span:first-child{
+  cursor:default;
+  transition: color .22s ease, text-shadow .22s ease, background .22s ease;
+}
+.edu-card h3:hover,
+.edu-school:hover,
+.edu-detail:hover,
+.edu-top span:first-child:hover{
+  color:#fff;
+  text-shadow:0 0 16px rgba(139,92,246,.48);
+}
+.edu-card h3:hover,
+.edu-school:hover{
+  background:linear-gradient(90deg,rgba(139,92,246,.18),rgba(66,217,255,.05),transparent 88%);
+  border-radius:7px;
+  padding-inline:7px;
+  margin-inline:-7px;
+}
+.edu-detail:hover{
+  color:#cdd3df;
+}
+.edu-icon{
+  transition:background .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.edu-icon:hover{
+  border-color:rgba(139,92,246,.45);
+  background:rgba(139,92,246,.14);
+  box-shadow:0 0 20px rgba(139,92,246,.16);
+}
+
+/* --- Applied Work --- */
+.work-card{
+  transition:border-color .28s ease, box-shadow .28s ease;
+}
+.work-card:hover{
+  border-color:rgba(139,92,246,.45);
+  box-shadow:0 22px 55px rgba(55,37,130,.16);
+}
+.work-card h3,
+.work-card p,
+.work-card > span{
+  transition:color .22s ease, text-shadow .22s ease, background .22s ease;
+}
+.work-card h3:hover,
+.work-card p:hover,
+.work-card > span:hover{
+  color:#fff;
+  text-shadow:0 0 15px rgba(139,92,246,.42);
+}
+.work-card h3:hover,
+.work-card > span:hover{
+  background:linear-gradient(90deg,rgba(139,92,246,.17),rgba(66,217,255,.04),transparent 88%);
+  border-radius:7px;
+  padding-inline:6px;
+  margin-inline:-6px;
+}
+
+/* --- Certifications --- */
+.certs{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;
+}
+.cert-card{
+  position:relative;
+  padding:23px;
+  min-height:300px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:rgba(255,255,255,.025);
+  overflow:hidden;
+  transition:border-color .28s ease, box-shadow .28s ease;
+}
+.cert-card:hover{
+  border-color:rgba(139,92,246,.45);
+  box-shadow:0 22px 55px rgba(55,37,130,.16);
+}
+.cert-card h3{
+  font-size:19px;
+  margin:0 0 9px;
+}
+.cert-number{
+  display:inline-block;
+  font:600 11px 'Space Grotesk';
+  color:#8d9aae;
+  margin-bottom:18px;
+}
+.cert-provider{
+  display:inline-block;
+  letter-spacing:.04em;
+  color:#a88eff;
+  font-size:10px;
+  margin-bottom:14px;
+}
+.cert-card p{
+  font-size:13px;
+  line-height:1.7;
+  color:#8f99ab;
+  margin:0;
+}
+.cert-number,
+.cert-card h3,
+.cert-provider,
+.cert-card p{
+  cursor:default;
+  transition:color .22s ease, text-shadow .22s ease, background .22s ease;
+}
+.cert-number:hover,
+.cert-card h3:hover,
+.cert-provider:hover,
+.cert-card p:hover{
+  color:#fff;
+  text-shadow:0 0 15px rgba(139,92,246,.44);
+}
+.cert-number:hover,
+.cert-card h3:hover,
+.cert-provider:hover{
+  background:linear-gradient(90deg,rgba(139,92,246,.18),rgba(66,217,255,.05),transparent 88%);
+  border-radius:7px;
+  padding-inline:6px;
+  margin-inline:-6px;
+}
+.cert-card p:hover{
+  color:#cdd3df;
+}
+
+/* --- Beyond Work --- */
+.extras > div{
+  transition:border-color .28s ease, box-shadow .28s ease, background .28s ease;
+}
+.extras > div:hover{
+  border-color:rgba(139,92,246,.45);
+  box-shadow:0 22px 55px rgba(55,37,130,.16);
+  background:linear-gradient(145deg,rgba(139,92,246,.08),rgba(255,255,255,.025));
+}
+.extras > div b,
+.extras > div span{
+  cursor:default;
+  transition:color .22s ease, text-shadow .22s ease, background .22s ease;
+}
+.extras > div b:hover,
+.extras > div span:hover{
+  color:#fff;
+  text-shadow:0 0 15px rgba(139,92,246,.42);
+}
+.extras > div b:hover{
+  background:linear-gradient(90deg,rgba(139,92,246,.17),rgba(66,217,255,.04),transparent 88%);
+  border-radius:7px;
+  padding-inline:6px;
+  margin-inline:-6px;
+}
+
+/* --- Shared touch behaviour --- */
+@media (hover:none), (pointer:coarse){
+  .edu-card h3:active,
+  .edu-school:active,
+  .edu-detail:active,
+  .work-card h3:active,
+  .work-card p:active,
+  .work-card > span:active,
+  .cert-number:active,
+  .cert-card h3:active,
+  .cert-provider:active,
+  .cert-card p:active,
+  .extras > div b:active,
+  .extras > div span:active{
+    color:#fff;
+    text-shadow:0 0 15px rgba(139,92,246,.44);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion:reduce){
+  .edu-card,.work-card,.cert-card,.extras>div{
+    animation:none!important;
+  }
+}
+
+/* Responsive certification layout */
+@media(max-width:1050px){
+  .certs{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .cert-card:last-child{grid-column:1/-1;}
+}
+@media(max-width:700px){
+  .certs{grid-template-columns:1fr;}
+  .cert-card:last-child{grid-column:auto;}
+  .cert-card{min-height:auto;}
+}
