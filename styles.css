@@ -156,32 +156,6 @@ main{max-width:1400px;margin:auto}.hero{min-height:88vh;display:grid;grid-templa
   .text-hover{cursor:pointer}
 }
 
-.skill-icon.tailwind{font-size:8px;letter-spacing:.02em}
-
-/* ===== SMALL MOBILE HERO IDENTITY ===== */
-.mobile-identity{
-  display:none;
-  position:absolute;
-  left:50%;
-  top:-54px;
-  transform:translateX(-50%);
-  width:max-content;
-  max-width:calc(100vw - 48px);
-  padding:9px 15px 10px;
-  border:1px solid rgba(139,92,246,.24);
-  border-radius:999px;
-  background:rgba(9,12,24,.58);
-  box-shadow:0 0 26px rgba(92,68,190,.12);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  text-align:center;
-  z-index:8;
-  pointer-events:none;
-}
-.mobile-identity b{display:block;font-size:10px;letter-spacing:.18em;color:#f4f3ff}
-.mobile-identity span{display:block;margin-top:3px;font-size:7px;letter-spacing:.12em;color:#8f93a8}
-.mobile-identity small{display:block;margin-top:3px;font-size:7px;letter-spacing:.1em;color:#6edfff}
-
 /* ===== V5 FLOAT + FLOW MOTION ===== */
 .hero-object{animation:heroFloat 7s ease-in-out infinite;will-change:transform}
 .float-chip{animation:chipFloat 4.8s ease-in-out infinite;will-change:transform}
@@ -242,27 +216,37 @@ main{max-width:1400px;margin:auto}.hero{min-height:88vh;display:grid;grid-templa
 }
 .depth-card:hover,.edu-card:hover,.experience-card:hover,.work-card:hover,.cert-card:hover,.extras>div:hover,.hire-card:hover{animation-play-state:paused;transform:translateY(-7px)}
 
-/* ===== PERSONAL SIGNATURE FOOTER ===== */
-footer{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:8px;
-  padding:64px 20px 110px;
-  text-align:center;
-}
-footer .footer-mark{
-  margin-bottom:8px;
-  color:rgba(139,92,246,.72);
-  font-size:11px;
-  letter-spacing:.08em;
-}
-footer>b{font-size:14px;letter-spacing:.18em;color:#f5f5f7}
-footer>span{font-size:10px;letter-spacing:.22em;color:#8b5cf6}
-footer>small{font-size:9px;letter-spacing:.2em;color:#73778a}
-footer>a{margin-top:12px}
 
-@media (max-width:700px){
-  .mobile-identity{display:block;top:-62px}
-  .hero-object{padding-top:18px}
+/* V5.3 — surgical fixes only; keeps the original V5 design intact */
+.edu-top{display:flex;justify-content:space-between;align-items:center;width:100%;}
+.edu-top > .text-hover{display:inline-block;}
+.edu-card .edu-icon{flex:0 0 auto;}
+
+/* Prevent nested/duplicate hover movement on text. */
+.edu-card:hover,.work-card:hover,.cert-card:hover,.extras>div:hover{transform:translateY(-5px)!important;animation-play-state:paused;}
+.edu-card .highlightable:hover,.edu-card .text-hover:hover,.work-card .text-hover:hover,.cert-card .text-hover:hover,.extras .text-hover:hover{transform:none!important;margin-inline:0!important;}
+
+/* Small mobile-only identity above the portrait. */
+.mobile-identity{display:none;}
+@media(max-width:700px){
+  .mobile-identity{display:block;position:absolute;left:50%;top:-58px;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 48px);padding:9px 15px 10px;border:1px solid rgba(139,92,246,.24);border-radius:999px;background:rgba(9,12,24,.72);box-shadow:0 0 26px rgba(92,68,190,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);text-align:center;z-index:8;pointer-events:none;}
+  .mobile-identity b{display:block;font:700 10px 'Space Grotesk';letter-spacing:.18em;color:#f4f3ff;}
+  .mobile-identity span{display:block;margin-top:3px;font-size:7px;letter-spacing:.12em;color:#8f93a8;}
+  .mobile-identity small{display:block;margin-top:3px;font-size:7px;letter-spacing:.1em;color:#6edfff;}
+  .hero-object{height:420px;}
 }
+.skill-icon.tailwind{font-size:8px;letter-spacing:.02em;}
+
+/* Clean certification structure */
+.cert-number{display:inline-block;margin-bottom:14px;}
+.cert-provider{display:block;margin-bottom:12px;letter-spacing:.04em;color:#a88eff;font-size:10px;}
+
+/* Footer signature */
+footer{justify-content:center;text-align:center;}
+.footer-signature{display:flex;flex-direction:column;align-items:center;gap:7px;}
+.footer-signature b{font:700 14px 'Space Grotesk';letter-spacing:.08em;color:#eef1f8;}
+.footer-signature>span:not(.footer-rule){font:600 11px 'Space Grotesk';letter-spacing:.16em;color:#9ba5b7;}
+.footer-signature small{font:600 10px 'Space Grotesk';letter-spacing:.14em;color:#697385;}
+.footer-rule{font-size:10px;letter-spacing:.1em;color:#7562c7;}
+.footer-signature a{margin-top:7px;color:#aeb7c9;}
+@media(max-width:700px){footer{padding-bottom:120px;} .footer-signature{width:100%;} .footer-rule{font-size:9px;}}
