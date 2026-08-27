@@ -56,11 +56,23 @@
   }));
 
   // WhatsApp hiring form -> Saurabh's own number.
+  const phoneInput = document.getElementById('phone');
+  phoneInput.addEventListener('input', () => {
+    phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+    phoneInput.setCustomValidity(phoneInput.value.length === 10 ? '' : 'Enter exactly 10 digits.');
+  });
+
   document.getElementById('hireForm').addEventListener('submit', e => {
     e.preventDefault();
     const company = document.getElementById('company').value.trim();
     const executive = document.getElementById('executive').value.trim();
     const phone = document.getElementById('phone').value.trim();
+    if (!/^\d{10}$/.test(phone)) {
+      phoneInput.setCustomValidity('Enter exactly 10 digits.');
+      phoneInput.reportValidity();
+      return;
+    }
+    phoneInput.setCustomValidity('');
     const position = document.getElementById('position').value.trim() || 'Not specified';
     const message = document.getElementById('message').value.trim() || 'I would like to connect regarding a job opportunity.';
     const text = `Hello Saurabh,\n\nI am interested in discussing a job opportunity with you.\n\nCOMPANY DETAILS\nCompany Name: ${company}\nHR / Executive Name: ${executive}\nContact Number: ${phone}\nPosition / Job Role: ${position}\n\nMESSAGE\n${message}`;
