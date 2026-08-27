@@ -1,22 +1,88 @@
+(() => {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('in')), {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-const canvas=document.getElementById('space'),ctx=canvas.getContext('2d');let W,H,dpr,pts=[],mx=0,my=0;function resize(){dpr=Math.min(devicePixelRatio||1, window.innerWidth < 600 ? 1 : 1.5);W=innerWidth;H=innerHeight;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);pts=Array.from({length:Math.min(window.innerWidth < 600 ? 45 : 85,Math.floor(W/(window.innerWidth < 600 ? 20 : 14)))},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.7+.35}))}resize();addEventListener('resize',resize);addEventListener('pointermove',e=>{mx=(e.clientX/W-.5)*2;my=(e.clientY/H-.5)*2});function draw(){ctx.clearRect(0,0,W,H);for(const p of pts){p.x+=p.vx+mx*.025;p.y+=p.vy+my*.018;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(180,220,255,.5)';ctx.fill()}for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){let a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,dist=Math.hypot(dx,dy);if(dist<115){ctx.strokeStyle='rgba(101,230,255,'+((1-dist/115)*.11)+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}requestAnimationFrame(draw)}draw();
-const hero=document.getElementById('tiltHero');addEventListener('pointermove',e=>{if(innerWidth<800)return;const r=hero.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;hero.style.transform='rotateY('+(x*3)+'deg) rotateX('+(-y*3)+'deg)'});addEventListener('pointerleave',()=>hero.style.transform='');
-const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(x=>obs.observe(x));
-document.getElementById('hireForm').addEventListener('submit',e=>{e.preventDefault();const company=document.getElementById('company').value.trim(),executive=document.getElementById('executive').value.trim(),phone=document.getElementById('phone').value.trim(),position=document.getElementById('position').value.trim(),message=document.getElementById('message').value.trim();const text='Hello Saurabh,\n\nI am interested in discussing a job opportunity with you.\n\nCOMPANY DETAILS\nCompany Name: '+company+'\nHR / Executive Name: '+executive+'\nContact Number: '+phone+'\nPosition / Job Role: '+(position||'Not specified')+'\n\nMESSAGE\n'+(message||'I would like to connect with you regarding a job opportunity.')+'\n\nI found your profile through your professional CV portfolio.';window.open('https://wa.me/917389135888?text='+encodeURIComponent(text),'_blank','noopener,noreferrer')});
+  // Skills toggle
+  const buttons = document.querySelectorAll('.switch-btn');
+  const views = document.querySelectorAll('.skill-view');
+  buttons.forEach(btn => btn.addEventListener('click', () => {
+    buttons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+    btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+    views.forEach(v => v.classList.remove('active'));
+    document.getElementById(btn.dataset.target).classList.add('active');
+  }));
 
-// Soft / Technical skills toggle
-document.querySelectorAll('.toggle-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.skill-panel').forEach(p=>p.classList.remove('active-panel'));btn.classList.add('active');document.getElementById(btn.dataset.skill==='soft'?'softSkills':'techSkills').classList.add('active-panel')}));
-
-
-// Mobile-friendly interaction layer
-(function(){
-  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-  if (reduce) return;
-  if (coarse) {
-    document.querySelectorAll('.skill,.project,.cert,.about-card,.t-card').forEach(el=>{
-      el.addEventListener('touchstart',()=>el.classList.add('touch-active'),{passive:true});
-      el.addEventListener('touchend',()=>setTimeout(()=>el.classList.remove('touch-active'),180),{passive:true});
+  // Tap support for skill details on touch devices; desktop uses hover/focus.
+  document.querySelectorAll('.skill-tile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      if (window.matchMedia('(pointer:coarse)').matches) {
+        const was = tile.classList.contains('touch-open');
+        document.querySelectorAll('.skill-tile.touch-open').forEach(t => t.classList.remove('touch-open'));
+        if (!was) tile.classList.add('touch-open');
+      }
     });
+  });
+
+  // Lightweight hero tilt on desktop only.
+  if (!reduced && window.matchMedia('(pointer:fine)').matches) {
+    const object = document.querySelector('.hero-object');
+    object.addEventListener('pointermove', e => {
+      const r = object.getBoundingClientRect();
+      const x = (e.clientX-r.left)/r.width-.5;
+      const y = (e.clientY-r.top)/r.height-.5;
+      object.style.transform = `rotateY(${x*3}deg) rotateX(${y*-3}deg)`;
+    });
+    object.addEventListener('pointerleave', () => object.style.transform='');
   }
+
+  // Bottom navigation: highlight current section using IntersectionObserver.
+  const navItems = [...document.querySelectorAll('.bottom-item')];
+  const sections = [...document.querySelectorAll('main section[id]')];
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      navItems.forEach(item => item.classList.toggle('active', item.getAttribute('href') === '#'+entry.target.id));
+    });
+  }, {rootMargin:'-42% 0px -48% 0px', threshold:0});
+  sections.forEach(section => sectionObserver.observe(section));
+
+  // Smooth scrolling for in-page links.
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({behavior: reduced ? 'auto' : 'smooth', block:'start'});
+  }));
+
+  // WhatsApp hiring form -> Saurabh's own number.
+  document.getElementById('hireForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const company = document.getElementById('company').value.trim();
+    const executive = document.getElementById('executive').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const position = document.getElementById('position').value.trim() || 'Not specified';
+    const message = document.getElementById('message').value.trim() || 'I would like to connect regarding a job opportunity.';
+    const text = `Hello Saurabh,\n\nI am interested in discussing a job opportunity with you.\n\nCOMPANY DETAILS\nCompany Name: ${company}\nHR / Executive Name: ${executive}\nContact Number: ${phone}\nPosition / Job Role: ${position}\n\nMESSAGE\n${message}`;
+    window.location.href = 'https://wa.me/917389135888?text=' + encodeURIComponent(text);
+  });
 })();
+
+// Text-first micro-interactions: on touch devices, tap a highlighted text item
+// to keep its glow visible briefly. Desktop still uses native hover.
+document.querySelectorAll('.text-hover').forEach((el) => {
+  el.addEventListener('click', (event) => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      document.querySelectorAll('.text-hover.touch-open').forEach((other) => {
+        if (other !== el) other.classList.remove('touch-open');
+      });
+      el.classList.toggle('touch-open');
+      event.stopPropagation();
+    }
+  });
+});
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.text-hover')) {
+    document.querySelectorAll('.text-hover.touch-open').forEach((el) => el.classList.remove('touch-open'));
+  }
+});

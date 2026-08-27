@@ -1,9 +1,3 @@
-# Saurabh Agrawal — Finance × Data
+# Saurabh Agrawal — Finance × Data Portfolio
 
-GitHub Pages portfolio.
-
-## Structure
-- index.html
-- styles.css
-- script.js
-- assets/
+GitHub Pages ready. Upload the contents of this folder to the repository root.
